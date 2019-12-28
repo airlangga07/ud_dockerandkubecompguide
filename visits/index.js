@@ -1,5 +1,6 @@
 const express = require('express');
 const redis = require('redis');
+const process = require('process');
 
 // initialize the express
 const app = express();
@@ -19,6 +20,11 @@ app.get('/', (req, res) => {
         client.set('visits', parseInt(visits) + 1);
     });
 });
+
+app.get('/crashed', (req, res) => {
+    console.log("Oops! The server crashed!");
+    process.exit(0);
+})
 
 app.listen(8081, () => {
     console.log('Listening on port 8081');
