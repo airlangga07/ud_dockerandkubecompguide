@@ -18,4 +18,8 @@ RUN npm run build
 # previous docker run result
 FROM nginx
 
+# expose port 80, elastic beanstalk will look at this
+# and use this to expose the port on aws
+EXPOSE 80
+
 COPY --from=builder /app/build /usr/share/nginx/html

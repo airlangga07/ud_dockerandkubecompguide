@@ -1,0 +1,26 @@
+sudo: required  # tell travis that we need sudo permission to run this build
+
+services:       # tell travis that it needs to download and install docker
+  - docker
+
+before_install: # a sets of command to execute before we automate the build
+  - docker build -t airlangga07/ud_dockerandkubecompguide_docker_react -f Dockerfile.dev .
+
+script:
+  -  docker run -e CI=true airlangga07/ud_dockerandkubecompguide_docker_react npm run test
+
+# this is the configuration for the elasticbeanstalk
+# different service provider will have different configuration
+
+deploy:
+  edge: true
+  provider: elasicbeanstalk
+  region: "ap-southeast-1"
+  app: "ud_dockerandkubecompguide_docker_react"
+  env: "UdDockerandkubecompguideDockerReact-env"
+  bucket_name: "elasticbeanstalk-ap-southeast-1-161045259490"
+  bucket_path: "ud_dockerandkubecompguide_docker_react"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
